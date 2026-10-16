@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CryptoTeam | Shopify development with crypto built in</title>
+<meta name="description" content="Fixed-price Shopify development packages for crypto checkout, token-gated collections, on-chain loyalty and NFT receipts. Paid in stablecoins, ETH, BTC or card.">
+<meta name="theme-color" content="#2a2bff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12' cy='16' r='9' fill='%23ffb800'/%3E%3Ccircle cx='21' cy='16' r='9' fill='none' stroke='%232a2bff' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Martian+Mono:wdth,wght@75..112,300..800&display=swap" rel="stylesheet">
+<script>document.documentElement.className+=' js';</script>
+<style>
+:root{
+  --cobalt:#2a2bff;
+  --chalk:#eef0f7;
+  --paper:#f7f8fd;
+  --ink:#0b0c1e;
+  --muted:#4d5070;
+  --amber:#ffb800;
+  --mint:#12d18e;
+  --error:#d92d20;
+  --line:rgba(11,12,30,.15);
+  --disp:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Martian Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--chalk);color:var(--ink);font:400 1.0625rem/1.6 var(--disp);-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3,h4{margin:0;font-stretch:84%;letter-spacing:-.025em;line-height:1.02;text-wrap:balance}
+h1{font-size:clamp(2.9rem,7.6vw,6.4rem);font-weight:700}
+h2{font-size:clamp(2.1rem,4.8vw,3.9rem);font-weight:680;margin-bottom:.45em}
+p{margin:0 0 1em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{width:min(100% - 40px,1240px);margin-inline:auto}
+.sub{color:var(--muted);max-width:52ch;font-size:1.15rem}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;border-radius:14px;border:2px solid transparent;font:650 1rem/1 var(--disp);text-decoration:none;cursor:pointer;transition:transform .18s,background .18s,color .18s,border-color .18s}
+.btn:hover{transform:translateY(-2px)}
+.btn[disabled]{opacity:.6;cursor:default;transform:none}
+.btn--amber{background:var(--amber);color:var(--ink)}
+.btn--amber:hover{background:#ffc933}
+.btn--cobalt{background:var(--cobalt);color:var(--paper)}
+.btn--cobalt:hover{background:#1a1bd8}
+.btn--line{border-color:currentColor;background:transparent;color:inherit}
+.btn--line:hover{background:rgba(127,127,160,.16)}
+.btn--sm{padding:10px 18px;border-radius:999px;font-size:.92rem}
+
+/* dock nav */
+.dock{position:fixed;z-index:60;top:14px;left:50%;transform:translateX(-50%);width:min(100% - 24px,900px);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 8px 8px 20px;border-radius:999px;background:rgba(11,12,30,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--paper)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1.15rem/1 var(--disp);font-stretch:90%;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px;flex:none}
+.menu{display:flex;align-items:center;gap:6px}
+.menu a:not(.btn){padding:8px 12px;border-radius:999px;text-decoration:none;font-size:.95rem;opacity:.82;transition:opacity .15s,background .15s}
+.menu a:not(.btn):hover{opacity:1;background:rgba(255,255,255,.1)}
+.burger{display:none;width:44px;height:40px;border:0;border-radius:999px;background:rgba(255,255,255,.1);color:inherit;cursor:pointer;position:relative}
+.burger span{position:absolute;left:13px;right:13px;height:2px;background:currentColor;border-radius:2px;transition:transform .2s,top .2s}
+.burger span:nth-child(1){top:15px}
+.burger span:nth-child(2){top:23px}
+.burger.open span:nth-child(1){top:19px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){top:19px;transform:rotate(-45deg)}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;gap:48px;padding:130px 0 48px;background:var(--cobalt);color:var(--paper);overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.22;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero::after{content:"";position:absolute;z-index:-1;width:min(90vw,980px);aspect-ratio:1;right:-18vw;top:6%;border-radius:50%;border:1.5px solid rgba(247,248,253,.2);box-shadow:inset 0 0 0 38px rgba(247,248,253,.035),inset 0 0 0 39px rgba(247,248,253,.14)}
+.hero-copy{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:32px 56px;align-items:end}
+.hero .lead{font-size:1.25rem;line-height:1.5;max-width:42ch;margin-bottom:1.4em;color:rgba(247,248,253,.88)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.price-stage{display:grid;gap:18px}
+.stage-note{margin:0;font-size:1rem;color:rgba(247,248,253,.8)}
+.odo{display:flex;align-items:flex-start;flex-wrap:wrap;gap:0 .3em;font-family:var(--mono);font-weight:600;font-size:clamp(3.4rem,13.2vw,12rem);line-height:1;letter-spacing:-.06em;font-stretch:90%}
+.odo-num{display:flex;height:1em;overflow:hidden}
+.col{display:block;height:1em;overflow:hidden}
+.strip{display:block;transition:transform 1s cubic-bezier(.16,.84,.24,1)}
+.strip span{display:block;height:1em}
+.sym{display:block;height:1em}
+.odo-unit{font:650 clamp(1.2rem,3.4vw,2.8rem)/1 var(--disp);letter-spacing:0;color:var(--amber);padding-top:.35em}
+.coins{display:flex;flex-wrap:wrap;gap:8px}
+.coin{position:relative;overflow:hidden;padding:11px 22px;border-radius:999px;border:1.5px solid rgba(247,248,253,.45);background:transparent;color:var(--paper);font:650 1rem/1 var(--disp);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.coin:hover{border-color:var(--paper)}
+.coin[aria-checked="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.coin::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--amber);transform:scaleX(0);transform-origin:left}
+.coins.auto .coin[aria-checked="true"]::after{animation:sweep var(--dur,3.4s) linear forwards}
+@keyframes sweep{to{transform:scaleX(1)}}
+
+/* sections */
+.sec{padding:clamp(80px,11vw,150px) 0}
+.sec--ink{background:var(--ink);color:var(--paper)}
+.sec--tint{background:#dfe0fb}
+.sec--cobalt{background:var(--cobalt);color:var(--paper)}
+.head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:24px;margin-bottom:clamp(32px,5vw,64px)}
+
+/* services */
+.rows{border-top:1.5px solid var(--ink)}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) 210px;gap:clamp(12px,3vw,48px);align-items:baseline;padding:clamp(22px,3vw,36px) 0;border-bottom:1px solid var(--line);border-radius:0;transition:background .25s,color .25s,padding .25s,border-radius .25s}
+.row h3{font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:660}
+.row p{margin:0;color:var(--muted)}
+.row .tag{justify-self:end;font-size:.85rem;padding:6px 14px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;text-decoration:none}
+@media (hover:hover){
+  .row:hover{background:var(--cobalt);color:var(--paper);padding-inline:26px;border-radius:16px}
+  .row:hover p{color:rgba(247,248,253,.86)}
+  .row:hover .tag{border-color:rgba(247,248,253,.5)}
+}
+
+/* process */
+.steps{--p:0;position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px;padding:44px 0 0;margin:0;list-style:none}
+.steps::before,.steps::after{content:"";position:absolute;left:0;top:0;height:5px;border-radius:3px}
+.steps::before{right:0;background:var(--line)}
+.steps::after{width:calc(var(--p)*100%);background:var(--cobalt)}
+.steps li::before{content:attr(data-n);display:block;margin-bottom:14px;font:600 .85rem/1 var(--mono);color:var(--cobalt)}
+.steps h3{font-size:1.7rem;font-weight:660;margin-bottom:.4em}
+.steps p{color:var(--muted);margin:0}
+
+/* under the hood */
+.hood{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:center}
+.hood .sub{color:rgba(247,248,253,.75)}
+.flow{margin:28px 0 0;padding:0;list-style:none;counter-reset:f;display:grid;gap:14px}
+.flow li{counter-increment:f;display:grid;grid-template-columns:34px 1fr;gap:12px;color:rgba(247,248,253,.88)}
+.flow li::before{content:counter(f);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--amber);color:var(--amber);font:600 .8rem/1 var(--mono)}
+.term{border-radius:20px;background:#15173f;border:1px solid rgba(255,255,255,.12);overflow:hidden}
+.term-bar{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.1);font:500 .78rem/1 var(--mono);color:rgba(247,248,253,.6)}
+.code{padding:22px 20px 26px;font:400 clamp(.7rem,1.35vw,.86rem)/1.75 var(--mono);overflow-x:auto}
+.ln{white-space:pre;color:#e7e9ff}
+.js .ln{opacity:0;transform:translateX(-8px);transition:opacity .35s,transform .35s}
+.js .ln.on{opacity:1;transform:none}
+.c{color:rgba(247,248,253,.45)}
+.k{color:#9a9dff}
+.s{color:var(--mint)}
+.f{color:var(--amber)}
+
+/* packages */
+.cur{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;background:var(--paper);border:1px solid var(--line)}
+.cur button{padding:9px 18px;border-radius:999px;border:0;background:transparent;color:var(--ink);font:650 .92rem/1 var(--disp);cursor:pointer;transition:background .15s,color .15s}
+.cur button:hover{background:rgba(42,43,255,.1)}
+.cur button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.cur-note{min-height:1.6em;margin:14px 0 28px;font-size:.95rem;color:var(--muted)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.plan{display:flex;flex-direction:column;padding:34px;border-radius:30px;background:var(--paper);border:1px solid var(--line)}
+.plan--hot{background:var(--cobalt);color:var(--paper);border-color:transparent}
+.plan--ink{background:var(--ink);color:var(--paper);border-color:transparent}
+.plan h3{font-size:1.9rem;font-weight:680;margin-bottom:18px}
+.price{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 .45em;font:600 clamp(1.8rem,3vw,2.5rem)/1.1 var(--mono);letter-spacing:-.05em;font-stretch:90%}
+.price .unit{font:650 1rem/1 var(--disp);letter-spacing:0;color:var(--amber)}
+.plan:not(.plan--hot):not(.plan--ink) .price .unit{color:var(--cobalt)}
+.p-sub{margin:.5em 0 22px;font-size:.92rem;opacity:.75;min-height:1.5em}
+.plan ul{list-style:none;margin:0 0 28px;padding:0;flex:1}
+.plan li{padding:11px 0;border-top:1px solid currentColor;border-top-color:rgba(127,127,160,.35)}
+.plan .btn{align-self:flex-start}
+.custom-price{font:650 clamp(1.8rem,3vw,2.5rem)/1.1 var(--disp);font-stretch:84%}
+
+/* wallet demo */
+.gate{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,72px);align-items:start}
+.readout{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;margin:26px 0;padding:20px 22px;border-radius:16px;background:var(--paper);border:1px solid var(--line);font:400 .78rem/1.5 var(--mono)}
+.readout dt{color:var(--muted)}
+.readout dd{margin:0;word-break:break-all}
+.gate-actions{display:flex;flex-wrap:wrap;gap:10px}
+.gate-msg{margin:18px 0 0;font-size:.95rem;color:var(--muted)}
+.drop{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.item{border-radius:20px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.art{position:relative;aspect-ratio:1;overflow:hidden}
+.art::before,.art::after{content:"";position:absolute}
+.a1{background:var(--cobalt)}
+.a1::before{width:62%;aspect-ratio:1;border-radius:50%;background:var(--amber);left:10%;top:14%}
+.a1::after{width:46%;height:16%;background:var(--paper);right:8%;bottom:14%;border-radius:999px}
+.a2{background:var(--amber)}
+.a2::before{width:70%;height:35%;background:var(--ink);border-radius:999px 999px 0 0;left:15%;bottom:0}
+.a2::after{width:26%;aspect-ratio:1;border-radius:50%;background:var(--cobalt);left:18%;top:16%}
+.a3{background:var(--mint)}
+.a3::before{width:48%;aspect-ratio:1;background:var(--ink);transform:rotate(18deg);left:14%;top:18%;border-radius:10px}
+.a3::after{width:40%;aspect-ratio:1;border-radius:50%;background:var(--paper);right:10%;bottom:12%}
+.veil{position:absolute;inset:0;z-index:2;display:grid;place-items:center;align-content:center;gap:8px;text-align:center;background:repeating-linear-gradient(135deg,#0b0c1e 0 12px,#17193f 12px 24px);color:var(--paper);font-size:.85rem;transition:transform .8s cubic-bezier(.7,0,.2,1)}
+.gate[data-state="open"] .veil{transform:translateY(-101%)}
+.meta{padding:14px 16px 16px}
+.meta h4{font-size:1.2rem;font-weight:660;margin-bottom:4px}
+.meta p{margin:0;font-size:.88rem;color:var(--muted)}
+.st-o{display:none;color:#0a7a54;font-weight:650}
+.gate[data-state="open"] .st-o{display:inline}
+.gate[data-state="open"] .st-l{display:none}
+
+/* faq */
+.faq{max-width:860px}
+details{border-top:1.5px solid var(--ink);padding:22px 0}
+details:last-of-type{border-bottom:1.5px solid var(--ink)}
+summary{display:flex;justify-content:space-between;gap:20px;cursor:pointer;list-style:none;font:650 clamp(1.25rem,2.2vw,1.6rem)/1.25 var(--disp);font-stretch:88%}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:none;font:400 1.8rem/1 var(--mono);color:var(--cobalt);transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:14px 0 0;color:var(--muted);max-width:62ch}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,5vw,80px);align-items:start}
+.contact .sub{color:rgba(247,248,253,.85)}
+.contact a{color:var(--amber)}
+form{display:grid;gap:16px;padding:clamp(22px,3vw,36px);border-radius:26px;background:var(--paper);color:var(--ink)}
+label{display:grid;gap:6px;font-weight:650;font-size:.92rem}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid rgba(11,12,30,.25);background:#fff;color:var(--ink);font:400 1rem/1.4 var(--disp)}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--cobalt);outline-offset:1px;border-color:var(--cobalt)}
+.bad{border-color:var(--error)}
+.form-msg{margin:0;min-height:1.5em;font-size:.92rem;color:var(--muted)}
+.form-msg.err{color:var(--error)}
+
+/* footer */
+.foot{padding:36px 0;background:var(--ink);color:rgba(247,248,253,.7);font-size:.92rem}
+.foot-in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px}
+
+/* responsive */
+@media (max-width:900px){
+  .hero-copy,.hood,.gate,.contact{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr;padding:0 0 0 28px;gap:30px}
+  .steps::before,.steps::after{top:0;left:0;width:5px}
+  .steps::before{right:auto;bottom:0}
+  .steps::after{height:calc(var(--p)*100%);width:5px}
+  .row{grid-template-columns:1fr;gap:10px}
+  .row .tag{justify-self:start}
+}
+@media (max-width:760px){
+  .burger{display:block}
+  .menu{display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;padding:12px;border-radius:26px;background:rgba(11,12,30,.96)}
+  .menu.open{display:flex}
+  .menu a:not(.btn){padding:12px 14px}
+  .menu .btn{margin-top:6px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .ln{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="dock" id="dock">
+  <a class="logo" href="#top" aria-label="CryptoTeam home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="12" cy="16" r="9" fill="#ffb800"/><circle cx="21" cy="16" r="9" fill="none" stroke="#f7f8fd" stroke-width="3"/></svg>
+    <span>CryptoTeam</span>
+  </a>
+  <button class="burger" id="burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+  <nav class="menu" id="menu" aria-label="Main">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#packages">Packages</a>
+    <a href="#demo">Demo</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact" class="btn btn--amber btn--sm">Get a quote</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="wrap hero-copy">
+    <h1>Sell in dollars.<br>Get paid in crypto.</h1>
+    <div>
+      <p class="lead">CryptoTeam builds crypto checkout, token-gated collections, on-chain loyalty and NFT receipts for Shopify stores. Fixed prices, paid in stablecoins, ETH, BTC or card.</p>
+      <div class="cta-row">
+        <a class="btn btn--amber" href="#packages">See packages</a>
+        <a class="btn btn--line" href="#demo">Try the wallet demo</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap price-stage">
+    <p class="stage-note">One product, priced at $120 in your store. Here is what a customer pays in each currency.</p>
+    <div class="odo" id="odo" role="img" aria-label="120.00 USD"></div>
+    <div class="coins auto" id="coins" role="radiogroup" aria-label="Show price in">
+      <button class="coin" type="button" role="radio" aria-checked="true" data-coin="USD">USD</button>
+      <button class="coin" type="button" role="radio" aria-checked="false" data-coin="BTC">BTC</button>
+      <button class="coin" type="button" role="radio" aria-checked="false" data-coin="ETH">ETH</button>
+      <button class="coin" type="button" role="radio" aria-checked="false" data-coin="USDC">USDC</button>
+      <button class="coin" type="button" role="radio" aria-checked="false" data-coin="USDT">USDT</button>
+    </div>
+    <p class="stage-note" id="rateLine" aria-live="polite">Your price list stays in dollars.</p>
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="head">
+      <h2>What we build</h2>
+      <p class="sub">Five pieces of Shopify work with crypto at the center. Buy one or combine them.</p>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <h3>Crypto checkout</h3>
+        <p>Gateway setup on your Shopify store, checkout styling and refund-flow configuration. We integrate the provider that fits your region and volume.</p>
+        <span class="tag">Stablecoins, ETH, BTC</span>
+      </div>
+      <div class="row">
+        <h3>Token-gated storefronts</h3>
+        <p>Products, discounts or whole collections that unlock for holders of a specific token or NFT, using wallet connect and the Shopify Storefront API.</p>
+        <span class="tag">Wallet connect</span>
+      </div>
+      <div class="row">
+        <h3>On-chain loyalty</h3>
+        <p>Customer rewards issued as tokens or NFTs instead of a points table inside an app database.</p>
+        <span class="tag">Tokens or NFTs</span>
+      </div>
+      <div class="row">
+        <h3>Proof-of-purchase NFTs</h3>
+        <p>Physical products ship with a linked NFT as an authenticity certificate, minted automatically for each order through a webhook.</p>
+        <span class="tag">Minted per order</span>
+      </div>
+      <div class="row">
+        <h3>Accounting hooks</h3>
+        <p>Crypto sales pushed to your bookkeeping tool, with the fiat value at the time of sale recorded on every order.</p>
+        <span class="tag">Fiat value per sale</span>
+      </div>
+      <div class="row">
+        <h3>Something else</h3>
+        <p>Custom Shopify work with a crypto angle is quoted case by case.</p>
+        <a class="tag" href="#contact">Describe your project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--tint" id="process">
+  <div class="wrap">
+    <div class="head">
+      <h2>How an engagement works</h2>
+      <p class="sub">Four stages. You pay as each milestone is delivered.</p>
+    </div>
+    <ol class="steps" id="steps">
+      <li data-n="01"><h3>Scope</h3><p>You send your store URL and your goal. We reply with a fixed quote and a milestone list.</p></li>
+      <li data-n="02"><h3>Build</h3><p>Work happens on a Shopify development theme or a duplicate, never directly on your live store.</p></li>
+      <li data-n="03"><h3>Pay per milestone</h3><p>Funds are released as each milestone is delivered. Pay in USDC, USDT, ETH, BTC or card.</p></li>
+      <li data-n="04"><h3>Launch and support</h3><p>We go live together, then offer an optional monthly maintenance retainer.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec sec--ink" id="hood">
+  <div class="wrap hood">
+    <div>
+      <h2>How an NFT receipt gets minted</h2>
+      <p class="sub">A typical proof-of-purchase flow, from checkout to wallet.</p>
+      <ol class="flow">
+        <li>The customer adds a wallet address at checkout.</li>
+        <li>Shopify sends an order-paid webhook to a small server.</li>
+        <li>The server verifies the webhook signature and queues a mint.</li>
+        <li>The certificate lands in the customer's wallet.</li>
+      </ol>
+    </div>
+    <div class="term" id="term">
+      <div class="term-bar">orders-paid.js (illustrative sketch)</div>
+      <div class="code" role="img" aria-label="Illustrative JavaScript sketch of a Shopify order-paid webhook that queues an NFT mint">
+        <div class="ln"><span class="c">// sketch only, not production code</span></div>
+        <div class="ln"><span class="k">app</span>.<span class="f">post</span>(<span class="s">'/webhooks/orders-paid'</span>, verifyShopifyHmac, <span class="k">async</span> (req, res) =&gt; {</div>
+        <div class="ln">  <span class="k">const</span> order = req.body;</div>
+        <div class="ln">  <span class="k">const</span> wallet = order.note_attributes</div>
+        <div class="ln">    .<span class="f">find</span>(a =&gt; a.name === <span class="s">'wallet'</span>)?.value;</div>
+        <div class="ln">  <span class="k">if</span> (!<span class="f">isAddress</span>(wallet)) <span class="k">return</span> res.<span class="f">sendStatus</span>(200);</div>
+        <div class="ln">&nbsp;</div>
+        <div class="ln">  <span class="k">await</span> queue.<span class="f">add</span>(<span class="s">'mint-receipt'</span>, {</div>
+        <div class="ln">    orderId: order.id,</div>
+        <div class="ln">    to: wallet,</div>
+        <div class="ln">    sku: order.line_items[0].sku,</div>
+        <div class="ln">  });</div>
+        <div class="ln">  res.<span class="f">sendStatus</span>(200);</div>
+        <div class="ln">});</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="packages">
+  <div class="wrap">
+    <div class="head">
+      <h2>Packages</h2>
+      <div class="cur" id="cur" role="group" aria-label="Show prices in">
+        <button type="button" data-cur="USD" aria-pressed="true">USD</button>
+        <button type="button" data-cur="BTC" aria-pressed="false">BTC</button>
+        <button type="button" data-cur="ETH" aria-pressed="false">ETH</button>
+        <button type="button" data-cur="USDC" aria-pressed="false">USDC</button>
+        <button type="button" data-cur="USDT" aria-pressed="false">USDT</button>
+      </div>
+    </div>
+    <p class="cur-note" id="curNote">Prices are placeholders until you set your own. Final pricing is confirmed in your quote.</p>
+    <div class="plans">
+      <article class="plan">
+        <h3>Checkout</h3>
+        <div class="price" data-usd="900"><span class="num">$900</span><span class="unit"></span></div>
+        <p class="p-sub"></p>
+        <ul>
+          <li>Crypto gateway setup</li>
+          <li>Checkout styling</li>
+          <li>Refund-flow configuration</li>
+          <li>Test transactions</li>
+        </ul>
+        <a href="#contact" class="btn btn--cobalt" data-plan="Checkout">Quote this package</a>
+      </article>
+      <article class="plan plan--hot">
+        <h3>Gated Store</h3>
+        <div class="price" data-usd="2400"><span class="num">$2,400</span><span class="unit"></span></div>
+        <p class="p-sub"></p>
+        <ul>
+          <li>Everything in Checkout</li>
+          <li>Wallet-connect integration</li>
+          <li>Token-gated products or collections</li>
+          <li>Gated discount codes</li>
+        </ul>
+        <a href="#contact" class="btn btn--amber" data-plan="Gated Store">Quote this package</a>
+      </article>
+      <article class="plan plan--ink">
+        <h3>Full Stack</h3>
+        <div class="custom-price">Custom</div>
+        <p class="p-sub">Scoped to your store</p>
+        <ul>
+          <li>Everything in Gated Store</li>
+          <li>On-chain loyalty or NFT receipts</li>
+          <li>Accounting integration</li>
+          <li>Maintenance retainer option</li>
+        </ul>
+        <a href="#contact" class="btn btn--amber" data-plan="Full Stack">Quote this package</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--tint" id="demo">
+  <div class="wrap gate" id="gate" data-state="locked">
+    <div>
+      <h2>Try a gated drop</h2>
+      <p class="sub">Connect a browser wallet and the locked collection opens. This page only reads your address, network and balance. Nothing is signed, sent or stored.</p>
+      <dl class="readout">
+        <dt>Status</dt><dd id="wStatus">Not connected</dd>
+        <dt>Address</dt><dd id="wAddr">—</dd>
+        <dt>Network</dt><dd id="wChain">—</dd>
+        <dt>Balance</dt><dd id="wBal">—</dd>
+      </dl>
+      <div class="gate-actions">
+        <button class="btn btn--cobalt" id="connectBtn" type="button">Connect wallet</button>
+        <button class="btn btn--line" id="simBtn" type="button">Preview as a member</button>
+        <button class="btn btn--line" id="resetBtn" type="button" hidden>Lock again</button>
+      </div>
+      <p class="gate-msg">Demo rule: any connected wallet unlocks the drop. A real build checks ownership of a specific token on-chain.</p>
+    </div>
+    <div class="drop">
+      <article class="item">
+        <div class="art a1"><div class="veil" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Members only</span></div></div>
+        <div class="meta"><h4>Genesis Hoodie</h4><p>$120 <span class="st-l">Locked</span><span class="st-o">Unlocked</span></p></div>
+      </article>
+      <article class="item">
+        <div class="art a2"><div class="veil" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Members only</span></div></div>
+        <div class="meta"><h4>Validator Cap</h4><p>$45 <span class="st-l">Locked</span><span class="st-o">Unlocked</span></p></div>
+      </article>
+      <article class="item">
+        <div class="art a3"><div class="veil" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Members only</span></div></div>
+        <div class="meta"><h4>Cold Storage Tote</h4><p>$60 <span class="st-l">Locked</span><span class="st-o">Unlocked</span></p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap faq">
+    <h2>Questions</h2>
+    <details>
+      <summary>Which crypto payment providers do you integrate?</summary>
+      <p>We pick per project, based on your country, volume and fee tolerance. Providers differ in supported regions and Shopify compatibility, so we confirm this when we scope the work.</p>
+    </details>
+    <details>
+      <summary>Do I have to take payment in crypto?</summary>
+      <p>No. Card and bank transfer stay available. Crypto is added as an option in stablecoins, ETH and BTC.</p>
+    </details>
+    <details>
+      <summary>Which blockchain do you build on?</summary>
+      <p>Token gating and NFT features are typically built on Ethereum or an EVM-compatible network. We confirm the chain with you when we scope the work.</p>
+    </details>
+    <details>
+      <summary>Do you give tax or legal advice?</summary>
+      <p>No. We connect your order data to accounting tools. How crypto sales are taxed and regulated depends on your country, so ask a qualified accountant or lawyer.</p>
+    </details>
+    <details>
+      <summary>Will you change my live store?</summary>
+      <p>Not before you approve a milestone. We build on a separate theme or a duplicate first.</p>
+    </details>
+  </div>
+</section>
+
+<section class="sec sec--cobalt" id="contact">
+  <div class="wrap contact">
+    <div>
+      <h2>Tell us about your store</h2>
+      <p class="sub">Send your store URL and what you want to add. We reply with a fixed quote and a milestone list. You can also write to <a href="#contact" data-email>hello@cryptoteam.cfd</a>.</p>
+    </div>
+    <form id="quoteForm" novalidate>
+      <label>Name
+        <input type="text" name="name" required autocomplete="name">
+      </label>
+      <label>Email
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>Store URL
+        <input type="text" name="store" placeholder="yourstore.myshopify.com">
+      </label>
+      <label>Package
+        <select name="plan" id="planSelect">
+          <option>Checkout</option>
+          <option>Gated Store</option>
+          <option>Full Stack</option>
+          <option>Not sure</option>
+        </select>
+      </label>
+      <label>Project details
+        <textarea name="details" rows="5" required></textarea>
+      </label>
+      <button type="submit" class="btn btn--cobalt">Send request</button>
+      <p class="form-msg" id="formMsg" role="status"></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>&copy; <span id="year"></span> CryptoTeam, cryptoteam.cfd</span>
+    <span>Not affiliated with Shopify Inc. Shopify is a trademark of its owner.</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Config: edit this ----
+  const CONTACT_EMAIL = 'hello@cryptoteam.cfd'; // placeholder: use a real inbox
+
+  $$('[data-email]').forEach(el => { el.textContent = CONTACT_EMAIL; el.href = 'mailto:' + CONTACT_EMAIL; });
+  $('#year').textContent = new Date().getFullYear();
+
+  // ---- Menu ----
+  const burger = $('#burger'), menu = $('#menu');
+  const closeMenu = () => { menu.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); };
+  burger.addEventListener('click', () => {
+    const o = menu.classList.toggle('open');
+    burger.classList.toggle('open', o);
+    burger.setAttribute('aria-expanded', String(o));
+  });
+  menu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+
+  // ---- Rates (live from CoinGecko, sample values until they load) ----
+  const SAMPLE = { BTC: 100000, ETH: 4000, USDC: 1, USDT: 1 };
+  const DIG = { USD: 2, BTC: 6, ETH: 4, USDC: 2, USDT: 2 };
+  const IDS = { bitcoin: 'BTC', ethereum: 'ETH', 'usd-coin': 'USDC', tether: 'USDT' };
+  let rates = Object.assign({}, SAMPLE);
+  let live = false;
+  const nf = (n, d) => n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const amountStr = (c, usd) => nf(c === 'USD' ? usd : usd / rates[c], DIG[c]);
+  const rateText = c => {
+    if (c === 'USD') return 'Your price list stays in dollars.';
+    const r = rates[c];
+    return '1 ' + c + ' = $' + nf(r, r < 10 ? 4 : r < 1000 ? 2 : 0) + '. ' +
+      (live ? 'Live rate from CoinGecko.' : 'Sample rate, live feed unavailable.');
+  };
+
+  // ---- Hero odometer ----
+  const odo = $('#odo');
+  const coinsEl = $('#coins');
+  const coinBtns = $$('.coin', coinsEl);
+  const COINS = ['USD', 'BTC', 'ETH', 'USDC', 'USDT'];
+  const DEMO_USD = 120;
+  const DUR = 3400;
+  let shown = '';
+  let idx = 0;
+
+  function odoSet(str, unit) {
+    const oldChars = Array.from(shown);
+    const newChars = Array.from(str);
+    const off = newChars.length - oldChars.length;
+    shown = str;
+    const numWrap = document.createElement('span');
+    numWrap.className = 'odo-num';
+    const strips = [];
+    newChars.forEach((ch, i) => {
+      if (/\d/.test(ch)) {
+        const col = document.createElement('span'); col.className = 'col';
+        const strip = document.createElement('span'); strip.className = 'strip';
+        for (let d = 0; d < 10; d++) { const s = document.createElement('span'); s.textContent = d; strip.appendChild(s); }
+        const prev = i - off >= 0 ? oldChars[i - off] : null;
+        const from = prev && /\d/.test(prev) ? +prev : 0;
+        strip.style.transform = 'translateY(-' + from * 10 + '%)';
+        strip.dataset.to = ch;
+        col.appendChild(strip); numWrap.appendChild(col); strips.push(strip);
+      } else {
+        const sym = document.createElement('span'); sym.className = 'sym'; sym.textContent = ch;
+        numWrap.appendChild(sym);
+      }
+    });
+    const u = document.createElement('span'); u.className = 'odo-unit'; u.textContent = unit;
+    odo.replaceChildren(numWrap, u);
+    void odo.offsetWidth;
+    strips.forEach((s, i) => {
+      s.style.transitionDelay = (i * 45) + 'ms';
+      s.style.transform = 'translateY(-' + (+s.dataset.to) * 10 + '%)';
+    });
+    odo.setAttribute('aria-label', str + ' ' + unit);
+  }
+
+  function show(c) {
+    idx = COINS.indexOf(c);
+    coinBtns.forEach(b => b.setAttribute('aria-checked', String(b.dataset.coin === c)));
+    odoSet(amountStr(c, DEMO_USD), c);
+    $('#rateLine').textContent = rateText(c);
+  }
+
+  let auto = !reduce, heroVisible = true, timer = null;
+  function schedule() {
+    clearTimeout(timer);
+    if (!auto || !heroVisible || document.hidden) return;
+    timer = setTimeout(() => { show(COINS[(idx + 1) % COINS.length]); schedule(); }, DUR);
+  }
+  coinBtns.forEach(b => b.addEventListener('click', () => {
+    auto = false;
+    clearTimeout(timer);
+    coinsEl.classList.remove('auto');
+    show(b.dataset.coin);
+  }));
+  if (reduce) coinsEl.classList.remove('auto');
+  new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; heroVisible ? schedule() : clearTimeout(timer); }).observe($('#top'));
+  document.addEventListener('visibilitychange', () => document.hidden ? clearTimeout(timer) : schedule());
+  show('USD');
+  schedule();
+
+  // ---- Package prices ----
+  let cur = 'USD';
+  function renderPrices() {
+    $$('.price[data-usd]').forEach(el => {
+      const usd = +el.dataset.usd;
+      const num = $('.num', el), unit = $('.unit', el);
+      const sub = el.nextElementSibling;
+      if (cur === 'USD') {
+        num.textContent = '$' + nf(usd, 0); unit.textContent = '';
+        sub.textContent = 'Placeholder, fixed in your quote';
+      } else {
+        num.textContent = amountStr(cur, usd); unit.textContent = cur;
+        sub.textContent = 'About $' + nf(usd, 0) + ' at the ' + (live ? 'live' : 'sample') + ' rate';
+      }
+    });
+    $('#curNote').textContent = cur === 'USD'
+      ? 'Prices are placeholders until you set your own. Final pricing is confirmed in your quote.'
+      : (live ? 'Crypto amounts use the live rate from CoinGecko and change with the market.'
+              : 'Live feed unavailable. Crypto amounts use sample rates.');
+  }
+  $$('[data-cur]').forEach(b => b.addEventListener('click', () => {
+    cur = b.dataset.cur;
+    $$('[data-cur]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderPrices();
+  }));
+  renderPrices();
+
+  function loadRates() {
+    const ctrl = 'AbortController' in window ? new AbortController() : null;
+    const t = setTimeout(() => ctrl && ctrl.abort(), 7000);
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,usd-coin,tether&vs_currencies=usd', { signal: ctrl ? ctrl.signal : undefined })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(d => {
+        clearTimeout(t);
+        let got = 0;
+        Object.keys(IDS).forEach(id => {
+          if (d[id] && typeof d[id].usd === 'number' && d[id].usd > 0) { rates[IDS[id]] = d[id].usd; got++; }
+        });
+        if (got === 4) { live = true; show(COINS[idx]); renderPrices(); }
+      })
+      .catch(() => clearTimeout(t));
+  }
+  loadRates();
+  setInterval(() => { if (!document.hidden) loadRates(); }, 90000);
+
+  // ---- Package buttons preselect the form ----
+  $$('[data-plan]').forEach(b => b.addEventListener('click', () => { $('#planSelect').value = b.dataset.plan; }));
+
+  // ---- Process line fills as you scroll ----
+  const steps = $('#steps');
+  let ticking = false;
+  function onScroll() {
+    ticking = false;
+    const r = steps.getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, (innerHeight * 0.7 - r.top) / r.height));
+    steps.style.setProperty('--p', p.toFixed(3));
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  addEventListener('resize', onScroll);
+  onScroll();
+
+  // ---- Code sketch reveals line by line ----
+  const term = $('#term');
+  const lines = $$('.ln', term);
+  new IntersectionObserver((es, o) => {
+    if (!es[0].isIntersecting) return;
+    o.disconnect();
+    lines.forEach((l, i) => reduce ? l.classList.add('on') : setTimeout(() => l.classList.add('on'), i * 120));
+  }, { threshold: 0.35 }).observe(term);
+
+  // ---- Wallet demo (reads address, network, balance only) ----
+  const gate = $('#gate');
+  const connectBtn = $('#connectBtn'), simBtn = $('#simBtn'), resetBtn = $('#resetBtn');
+  const wStatus = $('#wStatus'), wAddr = $('#wAddr'), wChain = $('#wChain'), wBal = $('#wBal');
+  const CHAINS = { 1: 'Ethereum', 10: 'Optimism', 137: 'Polygon', 8453: 'Base', 42161: 'Arbitrum One', 11155111: 'Sepolia' };
+  const ETH_NATIVE = { 1: 1, 10: 1, 8453: 1, 42161: 1, 11155111: 1 };
+  let connected = false;
+
+  const setGate = open => { gate.dataset.state = open ? 'open' : 'locked'; };
+  function resetWallet(msg) {
+    connected = false;
+    setGate(false);
+    wStatus.textContent = msg || 'Not connected';
+    wAddr.textContent = '—'; wAddr.removeAttribute('title');
+    wChain.textContent = '—'; wBal.textContent = '—';
+    connectBtn.hidden = false; simBtn.hidden = false; resetBtn.hidden = true;
+  }
+  async function refresh(addr) {
+    wAddr.textContent = addr.slice(0, 6) + '…' + addr.slice(-4);
+    wAddr.title = addr;
+    try {
+      const cid = parseInt(await window.ethereum.request({ method: 'eth_chainId' }), 16);
+      wChain.textContent = CHAINS[cid] || ('Chain ' + cid);
+      const hex = await window.ethereum.request({ method: 'eth_getBalance', params: [addr, 'latest'] });
+      const eth = Number(BigInt(hex) / 10n ** 14n) / 1e4;
+      wBal.textContent = eth.toFixed(4) + ' ' + (ETH_NATIVE[cid] ? 'ETH' : 'native token');
+    } catch (e) {
+      wBal.textContent = 'unavailable';
+    }
+  }
+  connectBtn.addEventListener('click', async () => {
+    if (!window.ethereum || typeof window.ethereum.request !== 'function') {
+      wStatus.textContent = 'No browser wallet found. Install one such as MetaMask, or use the member preview.';
+      return;
+    }
+    wStatus.textContent = 'Waiting for wallet…';
+    try {
+      const acc = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (!acc || !acc[0]) { resetWallet('No account returned'); return; }
+      connected = true;
+      wStatus.textContent = 'Connected';
+      connectBtn.hidden = true; simBtn.hidden = true; resetBtn.hidden = false;
+      setGate(true);
+      await refresh(acc[0]);
+    } catch (err) {
+      resetWallet(err && err.code === 4001 ? 'Request rejected in wallet' : 'Connection failed');
+    }
+  });
+  simBtn.addEventListener('click', () => {
+    connected = false;
+    wStatus.textContent = 'Member preview, no wallet';
+    wAddr.textContent = '—'; wChain.textContent = '—'; wBal.textContent = '—';
+    connectBtn.hidden = true; simBtn.hidden = true; resetBtn.hidden = false;
+    setGate(true);
+  });
+  resetBtn.addEventListener('click', () => resetWallet());
+  if (window.ethereum && typeof window.ethereum.on === 'function') {
+    window.ethereum.on('accountsChanged', acc => {
+      if (!connected) return;
+      if (!acc || !acc.length) resetWallet(); else refresh(acc[0]);
+    });
+    window.ethereum.on('chainChanged', () => {
+      if (!connected) return;
+      window.ethereum.request({ method: 'eth_accounts' }).then(a => { if (a && a[0]) refresh(a[0]); }).catch(() => {});
+    });
+  }
+
+  // ---- Quote form: opens the visitor's email app (no backend) ----
+  const form = $('#quoteForm'), formMsg = $('#formMsg');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const f = form.elements;
+    let ok = true;
+    ['name', 'email', 'details'].forEach(n => {
+      const v = f[n].value.trim();
+      const bad = !v || (n === 'email' && !/^\S+@\S+\.\S+$/.test(v));
+      f[n].classList.toggle('bad', bad);
+      if (bad) ok = false;
+    });
+    if (!ok) {
+      formMsg.className = 'form-msg err';
+      formMsg.textContent = 'Add your name, a valid email and project details, then send again.';
+      return;
+    }
+    const subject = 'Quote request: ' + f.plan.value;
+    const body = 'Name: ' + f.name.value.trim() + '\n' +
+      'Email: ' + f.email.value.trim() + '\n' +
+      'Store: ' + (f.store.value.trim() || 'n/a') + '\n' +
+      'Package: ' + f.plan.value + '\n\n' + f.details.value.trim();
+    formMsg.className = 'form-msg';
+    formMsg.textContent = 'Opening your email app. If nothing opens, write to ' + CONTACT_EMAIL + '.';
+    location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+})();
+</script>
+</body>
+</html>
